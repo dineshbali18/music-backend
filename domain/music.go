@@ -4,8 +4,8 @@ import "time"
 
 type Music struct {
 	ID        uint64    `json:"id"`
-	SongName  string    `json:"song_name"`
-	SongFile  []byte    `json:"-"`
+	Name      string    `json:"name"`
+	File      []byte    `json:"file"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
