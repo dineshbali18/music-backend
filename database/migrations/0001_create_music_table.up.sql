@@ -8,5 +8,7 @@ CREATE TABLE music (
 DEFAULT CHARSET = utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT = 'Table to store the music related data';
 
 ALTER TABLE music
-    ADD UNIQUE KEY `song_name_idx`(song_name),
-    ADD UNIQUE KEY `song_file_idx`(song_file);
+    ADD UNIQUE KEY `song_name_idx`(song_name);
+
+-- BLOB (binary large object) we use this type of datatyp to store videos, music etc..
+-- we cannot add index to BLOB type memory storage and also BLOB

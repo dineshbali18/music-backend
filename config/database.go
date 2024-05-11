@@ -3,20 +3,21 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/spf13/viper"
 )
 
 type DBConfig struct {
-	Type  string
-	Host string
-	ReadHost string
-	WriteHost string
-	Port string
-	Username string
-	DatabaseName string
-	Password string
-	DatabaseURL string
-	DatabaseReadURL string
+	Type             string
+	Host             string
+	ReadHost         string
+	WriteHost        string
+	Port             string
+	Username         string
+	DatabaseName     string
+	Password         string
+	DatabaseURL      string
+	DatabaseReadURL  string
 	DatabaseWriteURL string
 }
 
@@ -26,11 +27,11 @@ func GetDatabaseConfig() (err error) {
 	//Load the database configuration in the database struct
 	DB_CREDENTIALS := viper.GetString("DB_MYSQL_SECRETS")
 	if len(DB_CREDENTIALS) > 0 {
-			if err :=  json.Unmarshal([]byte(DB_CREDENTIALS),&DatabaseConfig);err!=nil {
+		if err = json.Unmarshal([]byte(DB_CREDENTIALS), &DatabaseConfig); err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
-		fmt.Println("DB Config data:",DatabaseConfig)
+		fmt.Println("DB Config data:", DatabaseConfig)
 	} else {
 		DatabaseConfig.Type = viper.GetString("DB_TYPE")
 		DatabaseConfig.Username = viper.GetString("DB_USERNAME")

@@ -1,9 +1,19 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"musicApp/config"
+
 	musicDelivery "musicApp/music/delivery/http"
-	musicRepository "musicApp/music/usecase"
-	musicUsecase "musicApp/music/repository/mysql"
+	musicRepository "musicApp/music/repository/mysql"
+	musicUsecase "musicApp/music/usecase"
+
+	"github.com/labstack/echo/v4"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/plugin/dbresolver"
 )
 
 var (
@@ -41,20 +51,7 @@ func main() {
 	}
 
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")
-
-	rdb := cacheServices.InitRedisCacheService()
-	cacheService := cacheServices.NewRedisCacheService(rdb)
-
-	res, err := cacheService.CheckRedisConnection()
-
-	if err != nil {
-		fmt.Println("Redis not connected properly", err)
-		return
-	} else {
-		fmt.Println("Redis connected succesfully....", res)
-	}
-
-	musicDelivery.NewBBHandler(e, musicUsecase.NewUser(musicRepository.NewUser(db), cacheService))
+	musicDelivery.NewMusicHandler(e, musicUsecase.NewMusicUsecase(musicRepository.NewMusicRepository(db)))
 	log.Fatal(e.Start(":" + "80"))
 
 }
