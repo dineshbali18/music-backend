@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"musicApp/domain"
 )
 
@@ -18,6 +19,7 @@ func (uc *musicUsecase) GetAllMusic() ([]*domain.Music, error) {
 
 func (uc *musicUsecase) AddMusic(music *domain.Music) error {
 	// You can implement any additional logic here, like validation
+	fmt.Println("MUSIC:::", music)
 	return uc.musicRepository.Add(music)
 }
 

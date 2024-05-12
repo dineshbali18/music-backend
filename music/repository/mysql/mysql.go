@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"fmt"
 	"musicApp/domain"
 
 	"gorm.io/gorm"
@@ -26,6 +27,7 @@ func (r *MusicRepository) Add(music *domain.Music) error {
 	if err := r.db.Create(music).Error; err != nil {
 		return err
 	}
+	fmt.Println("111111111111111111111")
 	return nil
 }
 
