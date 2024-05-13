@@ -9,6 +9,10 @@ type Music struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+func (Music) TableName() string{
+	return "music";
+}
+
 type MusicUsecase interface {
 	GetAllMusic() ([]*Music, error)
 	AddMusic(music *Music) error
