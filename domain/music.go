@@ -4,9 +4,9 @@ import "time"
 
 type Music struct {
 	ID        uint64    `json:"id"`
-	Name      string    `json:"name"`
-	File      []byte    `json:"file"`
-	CreatedAt time.Time `json:"created_at"`
+	Name      string    `json:"name,omitempty"`
+	File      []byte    `json:"file,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
 func (Music) TableName() string {
@@ -18,7 +18,7 @@ type MusicUsecase interface {
 	AddMusic(music *Music) error
 	UpdateMusic(music *Music) error
 	DeleteMusic(id string) error
-	GetMusicByID(id uint64) (*Music,error)
+	GetMusicByID(id uint64) (*Music, error)
 }
 
 type MusicRepository interface {
