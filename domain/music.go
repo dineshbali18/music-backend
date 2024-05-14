@@ -9,8 +9,8 @@ type Music struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (Music) TableName() string{
-	return "music";
+func (Music) TableName() string {
+	return "music"
 }
 
 type MusicUsecase interface {
@@ -18,6 +18,7 @@ type MusicUsecase interface {
 	AddMusic(music *Music) error
 	UpdateMusic(music *Music) error
 	DeleteMusic(id string) error
+	GetMusicByID(id uint64) (*Music,error)
 }
 
 type MusicRepository interface {
@@ -25,4 +26,5 @@ type MusicRepository interface {
 	Add(music *Music) error
 	Update(music *Music) error
 	Delete(id string) error
+	GetByID(id uint64) (*Music, error)
 }

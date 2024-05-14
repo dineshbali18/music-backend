@@ -86,9 +86,15 @@ func (d *delivery) updateMusic(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid music ID"})
 	}
 
-	// Get the music object from the form data
-	var music domain.Music
-	if err := c.Bind(&music); err != nil {
+	// Get the existing music object from the database
+	existingMusic, err := d.musicUsecase.GetMusicByID(musicID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to fetch existing music"})
+	}
+
+	// Bind the form data to a new music object
+	var updatedMusic domain.Music
+	if err := c.Bind(&updatedMusic); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
@@ -113,18 +119,27 @@ func (d *delivery) updateMusic(c echo.Context) error {
 		}
 
 		// Update the file content if a new file is uploaded
-		music.File = fileContent
+		updatedMusic.File = fileContent
 	}
 
 	// Set the music ID
-	music.ID = musicID
+	updatedMusic.ID = musicID
+
+	// Update the existing music object with the new data
+	// existingMusic.UpdateFrom(&updatedMusic)
+	if updatedMusic.Name != "" {
+		existingMusic.Name = updatedMusic.Name
+	}
+	if len(updatedMusic.File) > 0 {
+		existingMusic.File = updatedMusic.File
+	}
 
 	// Update the music in the database
-	if err := d.musicUsecase.UpdateMusic(&music); err != nil {
+	if err := d.musicUsecase.UpdateMusic(existingMusic); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, music)
+	return c.JSON(http.StatusOK, existingMusic)
 }
 
 func (d *delivery) deleteMusic(c echo.Context) error {

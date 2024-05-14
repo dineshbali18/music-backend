@@ -31,6 +31,14 @@ func (r *MusicRepository) Add(music *domain.Music) error {
 	return nil
 }
 
+func (r *MusicRepository) GetByID(id uint64) (*domain.Music, error) {
+	var music domain.Music
+	if err := r.db.First(&music, id).Error; err != nil {
+		return nil, err
+	}
+	return &music, nil
+}
+
 func (r *MusicRepository) Update(music *domain.Music) error {
 	if err := r.db.Save(music).Error; err != nil {
 		return err

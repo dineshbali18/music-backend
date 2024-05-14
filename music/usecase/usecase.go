@@ -23,6 +23,10 @@ func (uc *musicUsecase) AddMusic(music *domain.Music) error {
 	return uc.musicRepository.Add(music)
 }
 
+func (uc *musicUsecase) GetMusicByID(id uint64) (*domain.Music, error) {
+	return uc.musicRepository.GetByID(id)
+}
+
 func (uc *musicUsecase) UpdateMusic(music *domain.Music) error {
 	// You can implement any additional logic here, like validation
 	return uc.musicRepository.Update(music)
