@@ -92,6 +92,8 @@ func (d *delivery) updateMusic(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
+	name := c.FormValue("name")
+	music.Name = name
 	// Check if a new file is uploaded
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -118,6 +120,8 @@ func (d *delivery) updateMusic(c echo.Context) error {
 
 	// Set the music ID
 	music.ID = musicID
+	// music.Name=
+	music.CreatedAt = time.Now()
 
 	// Update the music in the database
 	if err := d.musicUsecase.UpdateMusic(&music); err != nil {
