@@ -10,6 +10,7 @@ import (
 	musicUsecase "musicApp/music/usecase"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -24,9 +25,11 @@ func init() {
 	//Initialize config
 	config.InitializeConfig()
 	e = echo.New()
+	e.Use(middleware.CORS())
 }
 
 func main() {
+
 	//Load Database config from config.yml
 	err := config.GetDatabaseConfig()
 	if err != nil {
