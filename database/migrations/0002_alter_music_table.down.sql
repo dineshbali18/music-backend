@@ -1,0 +1,2 @@
+ALTER TABLE Musics DROP COLUMN link;
+ALTER TABLE Musics DROP COLUMN image;
