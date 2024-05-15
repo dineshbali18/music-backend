@@ -22,7 +22,6 @@ var (
 )
 
 func init() {
-	//Initialize config
 	config.InitializeConfig()
 	e = echo.New()
 	e.Use(middleware.CORS())
@@ -30,19 +29,16 @@ func init() {
 
 func main() {
 
-	//Load Database config from config.yml
 	err := config.GetDatabaseConfig()
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	// Establish data base connection
 	db, err := gorm.Open(mysql.Open(config.DatabaseConfig.DatabaseURL), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	// Specifying DB Reader and Writer
 	err = db.Use(dbresolver.Register(dbresolver.Config{
 		Sources:  []gorm.Dialector{mysql.Open(config.DatabaseConfig.DatabaseWriteURL)},
 		Replicas: []gorm.Dialector{mysql.Open(config.DatabaseConfig.DatabaseReadURL)},

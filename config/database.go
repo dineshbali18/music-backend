@@ -24,7 +24,6 @@ type DBConfig struct {
 var DatabaseConfig DBConfig
 
 func GetDatabaseConfig() (err error) {
-	//Load the database configuration in the database struct
 	DB_CREDENTIALS := viper.GetString("DB_MYSQL_SECRETS")
 	if len(DB_CREDENTIALS) > 0 {
 		if err = json.Unmarshal([]byte(DB_CREDENTIALS), &DatabaseConfig); err != nil {
@@ -56,7 +55,6 @@ func GetDatabaseConfig() (err error) {
 	return err
 }
 
-// GeneratedDatabaseURL is the function that generated db url
 func generatedDatabaseURL(host string) (databaseURL string, err error) {
 
 	if DatabaseConfig.Type == "mysql" {

@@ -18,7 +18,6 @@ type delivery struct {
 func NewMusicHandler(e *echo.Echo, usecase domain.MusicUsecase) {
 	handler := &delivery{musicUsecase: usecase}
 
-	// Define routes for music endpoints
 	e.GET("/v1/get/music", handler.getAllMusic)
 	e.POST("/v1/add/music", handler.addMusic)
 	e.PUT("/v1/update/music/:id", handler.updateMusic)
@@ -35,19 +34,16 @@ func (d *delivery) getAllMusic(c echo.Context) error {
 
 func (d *delivery) addMusic(c echo.Context) error {
 	var music domain.Music
-	// fmt.Println("aaa")
-	// Read form fields
+
 	name := c.FormValue("name")
 	image := c.FormValue("image")
-	// fmt.Println("name:", name)
-	// Get file
+
 	file, err := c.FormFile("file")
-	// fmt.Println("file", file)
+
 	if err != nil {
 		return err
 	}
-	// fmt.Println("ccc")
-	// Open file
+
 	src, err := file.Open()
 	if err != nil {
 		return err
@@ -61,17 +57,11 @@ func (d *delivery) addMusic(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println("FIle", fileContent)
-
-	// Assign values to the Music object
 	music.Name = name
 	music.File = fileContent
 	music.Image = image
 	music.CreatedAt = time.Now()
 
-	// fmt.Println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-
-	// Add music to the database
 	if err := d.musicUsecase.AddMusic(&music); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
@@ -82,13 +72,11 @@ func (d *delivery) addMusic(c echo.Context) error {
 func (d *delivery) updateMusic(c echo.Context) error {
 	id := c.Param("id")
 
-	// Get the music ID from the URL parameter
 	musicID, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid music ID"})
 	}
 
-	// Get the music object from the form data
 	var music domain.Music
 	if err := c.Bind(&music); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
@@ -96,35 +84,30 @@ func (d *delivery) updateMusic(c echo.Context) error {
 
 	name := c.FormValue("name")
 	image := c.FormValue("image")
-	music.Name = name
-	music.Image = image
-	// Check if a new file is uploaded
+
 	file, err := c.FormFile("file")
 	if err != nil {
 		if err != http.ErrMissingFile {
 			return err
 		}
 	} else {
-		// Open the file
 		src, err := file.Open()
 		if err != nil {
 			return err
 		}
 		defer src.Close()
 
-		// Read the file content
 		fileContent, err := ioutil.ReadAll(src)
 		if err != nil {
 			return err
 		}
 
-		// Update the file content if a new file is uploaded
 		music.File = fileContent
 	}
 
-	// Set the music ID
 	music.ID = musicID
-	// music.Name=
+	music.Name = name
+	music.Image = image
 	music.CreatedAt = time.Now()
 
 	// Update the music in the database
