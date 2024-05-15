@@ -38,6 +38,7 @@ func (d *delivery) addMusic(c echo.Context) error {
 	// fmt.Println("aaa")
 	// Read form fields
 	name := c.FormValue("name")
+	image := c.FormValue("image")
 	// fmt.Println("name:", name)
 	// Get file
 	file, err := c.FormFile("file")
@@ -65,6 +66,7 @@ func (d *delivery) addMusic(c echo.Context) error {
 	// Assign values to the Music object
 	music.Name = name
 	music.File = fileContent
+	music.Image = image
 	music.CreatedAt = time.Now()
 
 	// fmt.Println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")

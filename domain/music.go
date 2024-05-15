@@ -6,7 +6,7 @@ type Music struct {
 	ID        uint64    `json:"id"`
 	Name      string    `json:"name"`
 	File      []byte    `json:"file"`
-	image     string    `json:""image`
+	Image     string    `json:"image"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
