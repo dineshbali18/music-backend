@@ -95,7 +95,9 @@ func (d *delivery) updateMusic(c echo.Context) error {
 	}
 
 	name := c.FormValue("name")
+	image := c.FormValue("image")
 	music.Name = name
+	music.Image = image
 	// Check if a new file is uploaded
 	file, err := c.FormFile("file")
 	if err != nil {
