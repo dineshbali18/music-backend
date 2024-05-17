@@ -80,12 +80,13 @@ func (d *delivery) updateMusic(c echo.Context) error {
 	if err := c.Bind(&music); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
+	fmt.Println("AAAAAAAAAAAAAA1")
 
 	existingMusic, err := d.musicUsecase.GetMusicById(id)
 	if err != nil {
 		return err
 	}
-
+	fmt.Println("AAAAAAAAAAAAAA2")
 	name := c.FormValue("name")
 	image := c.FormValue("image")
 
