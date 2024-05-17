@@ -30,3 +30,7 @@ func (uc *musicUsecase) UpdateMusic(music *domain.Music) error {
 func (uc *musicUsecase) DeleteMusic(id string) error {
 	return uc.musicRepository.Delete(id)
 }
+
+func (uc *musicUsecase) GetMusicById(id string) ([]*domain.Music, error) {
+	return uc.musicRepository.GetMusicById(id)
+}

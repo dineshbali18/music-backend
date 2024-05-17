@@ -15,6 +15,7 @@ type MusicUsecase interface {
 	AddMusic(music *Music) error
 	UpdateMusic(music *Music) error
 	DeleteMusic(id string) error
+	GetMusicById(id string) ([]*Music, error)
 }
 
 type MusicRepository interface {
@@ -22,4 +23,5 @@ type MusicRepository interface {
 	Add(music *Music) error
 	Update(music *Music) error
 	Delete(id string) error
+	GetMusicById(id string) ([]*Music, error)
 }

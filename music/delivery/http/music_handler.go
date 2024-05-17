@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"musicApp/domain"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -72,14 +71,19 @@ func (d *delivery) addMusic(c echo.Context) error {
 func (d *delivery) updateMusic(c echo.Context) error {
 	id := c.Param("id")
 
-	musicID, err := strconv.ParseUint(id, 10, 64)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid music ID"})
-	}
+	// musicID, err := strconv.ParseUint(id, 10, 64)
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid music ID"})
+	// }
 
 	var music domain.Music
 	if err := c.Bind(&music); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
+	existingMusic, err := d.musicUsecase.GetMusicById(id)
+	if err != nil {
+		return err
 	}
 
 	name := c.FormValue("name")
@@ -87,8 +91,10 @@ func (d *delivery) updateMusic(c echo.Context) error {
 
 	file, err := c.FormFile("file")
 	if err != nil {
+		// responding with a missing file
 		if err != http.ErrMissingFile {
-			return err
+			music.File = existingMusic[0].File
+			// return err
 		}
 	} else {
 		src, err := file.Open()
@@ -105,9 +111,16 @@ func (d *delivery) updateMusic(c echo.Context) error {
 		music.File = fileContent
 	}
 
-	music.ID = musicID
+	music.ID = existingMusic[0].ID
 	music.Name = name
 	music.Image = image
+	if len(name) == 0 {
+		music.Name = existingMusic[0].Name
+	}
+	if len(image) == 0 {
+		music.Image = existingMusic[0].Image
+	}
+
 	music.CreatedAt = time.Now()
 
 	// Update the music in the database

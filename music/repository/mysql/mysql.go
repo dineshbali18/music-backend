@@ -44,3 +44,11 @@ func (r *MusicRepository) Delete(id string) error {
 	}
 	return nil
 }
+
+func (r *MusicRepository) GetMusicById(id string) ([]*domain.Music, error) {
+	var music []*domain.Music
+	if err := r.db.Find(&music, id).Error; err != nil {
+		return nil, err
+	}
+	return music, nil
+}
