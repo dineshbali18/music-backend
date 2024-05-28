@@ -18,7 +18,6 @@ func (uc *musicUsecase) GetAllMusic() ([]*domain.Music, error) {
 }
 
 func (uc *musicUsecase) AddMusic(music *domain.Music) error {
-	// You can implement any additional logic here, like validation
 	fmt.Println("MUSIC:::", music)
 	return uc.musicRepository.Add(music)
 }
@@ -28,7 +27,6 @@ func (uc *musicUsecase) GetMusicByID(id uint64) (*domain.Music, error) {
 }
 
 func (uc *musicUsecase) UpdateMusic(music *domain.Music) error {
-	// You can implement any additional logic here, like validation
 	return uc.musicRepository.Update(music)
 }
 
